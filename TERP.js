@@ -99,6 +99,7 @@ var TERP = function(){
 		} 
 	}
 
+
 	return {
 		lin : function(){
 			return scaleInput(arguments, linear);

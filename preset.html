@@ -1,0 +1,16 @@
+<html>
+<head>
+	<title>PRESET</title>
+	<script type="text/javascript" src='./TERP.js'></script>
+	<script type="text/javascript" src='./PRE.js'></script>
+</head>
+<body>
+	<script type="text/javascript">
+		var p = new PRE([ {position: 0, value: 0}, {position: .5, value: 3}, {position: 1, value: 1}]);
+		p.set(100, .1);
+		for (var i = 0; i < 100; i++){
+			console.log(p.get(i / 100));
+		}
+	</script>
+</body>
+</html>
