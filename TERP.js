@@ -1,8 +1,13 @@
 var TERP = function(){
 
+	function isArray(arr){
+		return Object.prototype.toString.call(arr) === '[object Array]'
+	}
+
 	/*=========================================================================
 		SCALING
 	=========================================================================*/
+
 
 	/*
 		@param {number} input 0 - 1
@@ -11,7 +16,20 @@ var TERP = function(){
 		@returns {number}
 	*/
 	function interpolate(input, outputMin, outputMax){
-		return input*(outputMax - outputMin) + outputMin;
+		if (isArray(outputMin) && isArray(outputMax)){
+			if (outputMin.length !== outputMax.length){
+				throw new Error("input and output array must be the same length");
+			}
+			var ret = new Array(outputMin.length);
+			for (var i = 0; i < outputMin.length; i++){
+				var min = outputMin[i];
+				var max = outputMax[i];
+				ret[i] = input*(max - min) + min;
+			}
+			return ret;
+		} else {
+			return input*(outputMax - outputMin) + outputMin;
+		}
 	}
 
 	/*

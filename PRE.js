@@ -12,6 +12,15 @@
 	}]);
 
 	vals.get(.1);
+
+			-or-
+
+	var vals = new PRE([.1, 3, .4, 1]) 
+
+	//get it through an index from 0 to 1;
+	vals.get(.5);
+
+
 */
 var PRE = function(values){
 	//validate the values
