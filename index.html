@@ -6,15 +6,26 @@
 </head>
 <body>
 	<style type="text/css">
+
+		body {
+			font-family: monospace;;
+		}
+
+		#Graph .coords {
+			position: absolute;
+			width: 20px;
+			height: 10px;
+		}
+
 		#Graph {
 			width: 500px;
 			height: 500px;
 			position: absolute;
-			top: 50%;
+			top: 10%;
 			left: 50%;
-			margin-top: -250px;
 			margin-left: -250px;
 		}
+
 		#Graph .dot{
 			width: 5px;
 			height: 5px;
@@ -27,9 +38,7 @@
 		}
 
 		#Graph #ButtonContainer {
-			width: 220px;
-			left: 50%;
-			margin-left: -110px;
+			width: 100%;
 			top: 550px;
 			position: absolute;
 		}
@@ -42,9 +51,10 @@
 
 	<div id='Graph'>
 		<div id='ButtonContainer'>
-			<button type="button" onclick="scaleInput(1);">Linear</button>
-			<button type="button" onclick="scaleInput(2);">Exponential</button>
-			<button type="button" onclick="scaleInput(.5);">Logarithmic</button>
+			<button type="button" onclick="generateCurve(TERP.scale, 0, 100, 0, 500);">TERP.scale(i, 0, 100, 0, 500)</button>
+			<button type="button" onclick="generateCurve(TERP.scale, 0, 100, 0, 500, 2);">TERP.scale(i,  0, 100, 0, 500, 2)</button>
+			<button type="button" onclick="generateCurve(TERP.scale, 0, 100, 0, 500, .5);">TERP.scale(i,  0, 100, 0, 500, .5)</button>
+			<button type="button" onclick="generateCurve(TERP.scaleTimeline, 0, 100, [0, 500, 400, 200, 250]);">TERP.scaleTimeline(i,  0, 100, [0, 500, 400, 200, 250])</button>
 		</div>
 	</div>
 
@@ -52,9 +62,32 @@
 	<script type="text/javascript">
 
 		var plots = [];
+		var graph = document.getElementById("Graph");
 
+		//add the axes to the graph
+		function makeGraph(){
+			//generate the yAxis
+			for (var i = 0; i <= 5; i++){
+				var element = document.createElement("div");
+				graph.appendChild(element);
+				element.className = "coords";
+				element.style.left =  -20;
+				element.style.top = 20 * (5 - i) + "%";
+				element.textContent = i * 100;
+			}	
+			//generate the xAxis
+			for (var i = 1; i <= 5; i++){
+				var element = document.createElement("div");
+				graph.appendChild(element);
+				element.className = "coords";
+				element.style.left = 20 * i + "%";
+				element.style.top = "100%";
+				element.textContent = i * 20;
+			}	
+		}
+
+		//put all of the dots in the graph
 		function fillGraph(){
-			var graph = document.getElementById("Graph");
 			for (var i = 0; i < 100; i++){
 				var element = document.createElement("div");
 				graph.appendChild(element);
@@ -64,14 +97,19 @@
 			}
 		}
 
-		fillGraph();
-
-		function scaleInput(exponent){
+		//apply a curve function to all positions on the graph
+		function generateCurve(){
+			var funct = arguments[0];
+			var args = Array.prototype.slice.call(arguments, 0);
 			for (var i = 0; i < 100; i++){
 				var el = plots[i];
-				el.style.bottom = TERP.scale(i, 0, 100, 0, 500, exponent);
+				args[0] = i;
+				el.style.bottom = funct.apply(this, args);
 			}
 		}
+
+		makeGraph();
+		fillGraph();
 
 	</script>
 </body>
