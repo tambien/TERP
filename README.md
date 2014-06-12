@@ -19,8 +19,11 @@ TERP is a minimal interpolation library which is AMD compatible for normalizing,
 
 examples: 
 ```javascript
-	TERP.scale(.5, 100, 200); //returns 150
-	TERP.scale(.5, 100, 200, 2) // returns 125
+	TERP.scale(.5, 100, 200); 
+	//returns 150
+
+	TERP.scale(.5, 100, 200, 2) 
+	// returns 125
 ```
 
  With 5 or 6 arguments, the input the second and third arguments define the input range
@@ -40,8 +43,11 @@ examples:
 
 examples: 
 ```javascript
-	TERP.scale(50, 0, 100, 100, 1000, 2); //returns 325
-	TERP.scale(-1, -2, 0, 0, 1000); //returns 500
+	TERP.scale(50, 0, 100, 100, 1000, 2); 
+	//returns 325
+
+	TERP.scale(-1, -2, 0, 0, 1000); 
+	//returns 500
 ```
 
 ##map
@@ -67,6 +73,15 @@ There are array version of each of those functions.
 
 ```normalizeArray```, ```scaleArray```, and ```mapArray``` are the same as the above funcitons, but take an array as their first argument and return an array of the same length as the first argument with each of the values interpolated. 
 
-```normalizeArray``` can accept only one argument, in which case it will set the inputMin and inputMax to the smallest and largest values in the array. 
+```normalizeArray``` can accept one argument, in which case it will set the inputMin and inputMax to the smallest and largest values in the array. 
+
+```javascript
+//with one argument:
+TERP.normalizeArray([1, 2, 3, 4, 5]); 
+// returns [0, .4, .6, .8, 1];
+
+//with three arguments:
+TERP.normalizeArray([1, 2, 3, 4, 5], 0, 10); 
+// returns [0, .2, .3, .4, 5];
 
 
