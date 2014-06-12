@@ -60,36 +60,34 @@
 				graph.appendChild(element);
 				element.className = "dot";
 				element.style.left =  i * 5;
-				element.style.bottom =  i * 5;
 				plots.push(element);
 			}
 		}
 
 		fillGraph();
 
-		//interplate linear
-		function interplateLin(){
+		function scaleInput(exponent){
 			for (var i = 0; i < 100; i++){
 				var el = plots[i];
-				el.style.bottom = TERP.lin(i, 0, 100, 0, 500);
+				el.style.bottom = TERP.scale(i, 0, 100, 0, 500, exponent);
 			}
+		}
+
+		//interplate linear
+		function interplateLin(){
+			scaleInput(1);
 		}
 
 		//interplate linear
 		function interplateExp(){
-			for (var i = 0; i < 100; i++){
-				var el = plots[i];
-				el.style.bottom = TERP.exp(i, 0, 100, 0, 500);
-			}
+			scaleInput(2);
 		}
 
 		//interplate linear
 		function interplateLog(){
-			for (var i = 0; i < 100; i++){
-				var el = plots[i];
-				el.style.bottom = TERP.log(i, 0, 100, 0, 500);
-			}
+			scaleInput(.5);
 		}
+		
 	</script>
 </body>
 </html>
