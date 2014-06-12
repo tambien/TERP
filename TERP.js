@@ -134,11 +134,17 @@
 		},
 		/**
 		 *  like normalize, but accepts an array
+		 *  if there is only one argument, the inputMin and inputMax 
+		 *  	are determined by the smallest and largest values of the array.
 		 *  @return {array<number>} an array of the same size 
 		 */
 		normalizeArray : function(){
 			var input = arguments[0];
 			var args = Array.prototype.slice.call(arguments, 0);
+			if (args.length === 1){
+				args[1] = Math.min.apply(Math, input);
+				args[2] = Math.max.apply(Math, input);
+			}
 			return applyToArray(input, args, TERP.normalize);
 		}
 	};
