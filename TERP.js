@@ -12,9 +12,37 @@
 	}
 } (this, function () {
 
+	/**
+	 *  applies a funct to each number in arr
+	 *  @param  {Array<number} arr   
+	 *  @param  {Array<number>} args  arguments to be applied to funct
+	 *  @param  {function} funct 
+	 *  @return {Array<number>}       maps each of the values in ret to each of the outputs
+	 */
+	function applyToArray(arr, args, funct){
+		var ret = new Array(arr.length);
+		for (var i = 0; i < arr.length; i++){
+			args[0] = arr[i];
+			ret[i] = funct.apply(TERP, args);
+		}
+		return ret;	
+	}
+
+	/**
+	 *  interpolates a normalized number to between the outputMin and outputMax
+	 *  @param  {number} input   
+	 *  @param  {number} outputMin
+	 *  @param  {number} outputMax
+	 *  @return {number}           
+	 */
+	function interpolate(input, outputMin, outputMax){
+		return input * (outputMax - outputMin) + outputMin;
+	}
+
 	var TERP = {
 		/**
 		 *  normalizes (0-1) a number between inputMin and inputMax
+		 *  @param 	{number} input 
 		 *  @param  {number} inputMin 
 		 *  @param  {number} inputMax 
 		 *  @return {number} 
@@ -23,23 +51,21 @@
 			return (input - inputMin) / (inputMax - inputMin);
 		},
 		/**
-		 *  interpolates a normalized number to between the outputMin and outputMax
-		 *  @param  {number} input   
-		 *  @param  {number} outputMin
-		 *  @param  {number} outputMax
-		 *  @return {number}           
-		 */
-		interpolate : function(input, outputMin, outputMax){
-			return input * (outputMax - outputMin) + outputMin;
-		},
-		/**
-		 *  if 3 or 4 inputs:
-		 *  	scales the value from 0-1 range to the output range
-	 	 *  	with an optional exponent
+		 *  if 3 or 4 inputs, assumes the input range is between 0-1
+		 *  	
+	 	 *  @param {number} input
+ 		 *  @param {number} outputMin	
+ 		 *	@param {number} outputMax
+ 		 *  @param {number=} exponent (optional exponent which will change the interpolation curve)
 	 	 *  	
 		 *  if 5 or 6 inputs:
-		 *  	scales the value from the input range to the output range
-		 *  	with an optional exponent
+		 *  
+		 *  @param {number} input
+		 *	@param {number} inputMin
+		 *	@param {number} inputMax
+		 *  @param {number} outputMin	
+		 *	@param {number} outputMax
+		 *  @param {number=} exponent (optional exponent which will change the interpolation curve)
 		 *
 		 *  @return {number} 
 		 */
@@ -48,17 +74,17 @@
 			var input = arguments[0];
 			var normalized, exped;
 			if (argLen === 3) {
-				return TERP.interpolate(input, arguments[1], arguments[2]);
+				return interpolate(input, arguments[1], arguments[2]);
 			} else if (argLen === 4){
 				exped = Math.pow(input, arguments[3]);
-				return TERP.interpolate(exped, arguments[1], arguments[2]);
+				return interpolate(exped, arguments[1], arguments[2]);
 			} else if (argLen === 5){
 				normalized = TERP.normalize(input, arguments[1], arguments[2]);
-				return TERP.interpolate(normalized, arguments[3], arguments[4]);
+				return interpolate(normalized, arguments[3], arguments[4]);
 			} else if (argLen === 6){
 				normalized = TERP.normalize(input, arguments[1], arguments[2]);
 				exped = Math.pow(normalized, arguments[5]);
-				return TERP.interpolate(exped, arguments[3], arguments[4]);
+				return interpolate(exped, arguments[3], arguments[4]);
 			} else {
 				console.error("scale accepts 3 - 6 arguments");
 			}
@@ -87,7 +113,34 @@
 			} else {
 				return interped;
 			}
-		}	
+		},
+		/**
+		 *  like scale, but accepts an array
+		 *  @return {array<number>} an array of the same size 
+		 */
+		scaleArray : function(){
+			var input = arguments[0];
+			var args = Array.prototype.slice.call(arguments, 0);
+			return applyToArray(input, args, TERP.scale);
+		},
+		/**
+		 *  like map, but accepts an array
+		 *  @return {array<number>} an array of the same size 
+		 */
+		mapArray : function(){
+			var input = arguments[0];
+			var args = Array.prototype.slice.call(arguments, 0);
+			return applyToArray(input, args, TERP.map);
+		},
+		/**
+		 *  like normalize, but accepts an array
+		 *  @return {array<number>} an array of the same size 
+		 */
+		normalizeArray : function(){
+			var input = arguments[0];
+			var args = Array.prototype.slice.call(arguments, 0);
+			return applyToArray(input, args, TERP.normalize);
+		}
 	};
 
 	return TERP;

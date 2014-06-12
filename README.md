@@ -1,6 +1,6 @@
-TERP is a minimal interpolation library which is AMD compatible for normalizing, interpolating, scaling and mapping values.
+TERP is a minimal interpolation library which is AMD compatible for normalizing, scaling and mapping values.
 
-#API
+##scale
 
 ```scale``` is the core TERP method. It accepts 3-6 inputs
  
@@ -11,7 +11,7 @@ TERP is a minimal interpolation library which is AMD compatible for normalizing,
  *  @param {number} input
  *  @param {number} outputMin	
  *	@param {number} outputMax
- *  @param {number=} exponent (optinal exponent which will change the interpolation curve)
+ *  @param {number=} exponent (optional exponent which will change the interpolation curve)
  * 
  *  @return {number} 
  */
@@ -32,7 +32,7 @@ examples:
  *	@param {number} inputMax
  *  @param {number} outputMin	
  *	@param {number} outputMax
- *  @param {number=} exponent (optinal exponent which will change the interpolation curve)
+ *  @param {number=} exponent (optional exponent which will change the interpolation curve)
  * 
  *  @return {number} 
  */
@@ -43,3 +43,28 @@ examples:
 	TERP.scale(50, 0, 100, 100, 1000, 2); //returns 325
 	TERP.scale(-1, -2, 0, 0, 1000); //returns 500
 ```
+
+##map
+
+```map``` is just like scale, but will clip the output to the output range
+
+##normalize
+
+```normalize``` normalize will scale an input within an input range to 0-1
+
+```javascript
+/**
+ *  @param  {number} input 
+ *  @param  {number} inputMin 
+ *  @param  {number} inputMax 
+ *  @return {number} 
+ */
+```
+
+#Arrays
+
+There are array version of each of those functions. 
+
+```normalizeArray```, ```scaleArray```, and ```mapArray``` are the same as the above funcitons, but take an array as their first argument and return an array of the same length as the first argument with each of the values interpolated. 
+
+
