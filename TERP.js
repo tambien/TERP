@@ -39,6 +39,25 @@
 		return input * (outputMax - outputMin) + outputMin;
 	}
 
+	/**
+	 *  clip the input value so that it is between the outputMin and outputMax
+	 *  @param  {number} input   
+	 *  @param  {number} outputMin
+	 *  @param  {number} outputMax
+	 *  @return {number}           
+	 */
+	function clip(input, outputMin, outputMax){
+		var clipMin = Math.min(outputMin, outputMax);
+		var clipMax = Math.max(outputMin, outputMax);
+		if (input > clipMax){
+			return clipMax;
+		} else if (input < clipMin){
+			return clipMin;
+		} else {
+			return input;
+		}
+	}
+
 	var TERP = {
 		/**
 		 *  normalizes (0-1) a number between inputMin and inputMax
@@ -97,21 +116,10 @@
 			var interped = TERP.scale.apply(TERP, arguments);
 			//clip the output
 			var argLen = arguments.length;
-			var clipMin, clipMax;
 			if (argLen === 3 || argLen === 4){
-				clipMin = Math.min(arguments[1], arguments[2]);
-				clipMax = Math.max(arguments[1], arguments[2]);
+				return clip(interped, arguments[1], arguments[2]);
 			} else if (argLen === 5 || argLen === 6){
-				clipMin = Math.min(arguments[3], arguments[4]);
-				clipMax = Math.max(arguments[3], arguments[4]);
-			}
-			//clip the output
-			if (interped > clipMax){
-				return clipMax;
-			} else if (interped < clipMin){
-				return clipMin;
-			} else {
-				return interped;
+				return clip(interped, arguments[3], arguments[4]);
 			}
 		},
 		/**
@@ -146,6 +154,27 @@
 				args[2] = Math.max.apply(Math, input);
 			}
 			return applyToArray(input, args, TERP.normalize);
+		},
+		/**
+		 *  interpolate over a timeline of numbers
+		 */
+		scaleTimeline : function(){
+			var timeline;
+			var progress = arguments[0];
+			if (arguments.length === 2){
+				timeline = arguments[1];
+			} else if (arguments.length === 4){
+				//normalize the progress
+				progress = TERP.normalize(progress, arguments[1], arguments[2]);
+				timeline = arguments[3];
+			} else {
+				console.error("scaleTimeline takes 2 or 4 arguments");
+			}
+			//find the values to scale between
+			var timelineLen = timeline.length - 1;
+			var betweenMin = Math.floor(progress * timelineLen);
+			var betweenMax = betweenMin + 1;
+			return TERP.scale(progress, betweenMin / timelineLen, betweenMax / timelineLen, timeline[betweenMin], timeline[betweenMax]);
 		}
 	};
 
