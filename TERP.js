@@ -1,11 +1,14 @@
 (function (root, factory) {
 	//can run with or without requirejs
 	if (typeof define === "function" && define.amd) {
-		// AMD. Register as an anonymous module.
+		// AMD. Register as module.
 		define(function () {
 			var TERP = factory();
 			return TERP;
 		});
+	} else if (typeof exports === "object") {
+		//so that it can be used within node without requirejs
+		module.exports = factory(root);
 	} else if (typeof root.TERP !== "function") {
 		//make Tone public
 		root.TERP = factory(root);
