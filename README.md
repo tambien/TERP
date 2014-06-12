@@ -1,34 +1,45 @@
-Terp is a minimal interpolation library. 
+TERP is a minimal interpolation library which is AMD compatible for normalizing, interpolating, scaling and mapping values.
 
 #API
 
+```scale``` is the core TERP method. It accepts 3-6 inputs
+ 
+ With 3 or 4 arguments, the input is assumed to be between 0 and 1. 
+
 ```javascript
-TERP.lin | exp | log (
-	input, //the input to scale
-	rangeMin, 
-	rangeMax, 
-	outputMin,
-	outputMax,
-	clip, //(optional) clip the values to the output range
-);
+/**
+ *  @param {number} input
+ *  @param {number} outputMin	
+ *	@param {number} outputMax
+ *  @param {number=} exponent (optinal exponent which will change the interpolation curve)
+ * 
+ *  @return {number} 
+ */
 ```
 
-or if the input is between 0-1
+examples: 
 ```javascript
-TERP.lin | exp | log (
-	input, //the input to scale
-	outputMin,
-	outputMax,
-	clip, //(optional) clip the values to the output range
-);
+	TERP.scale(.5, 100, 200); //returns 150
+	TERP.scale(.5, 100, 200, 2) // returns 125
 ```
 
-#Examples
+ With 5 or 6 arguments, the input the second and third arguments define the input range
+
 ```javascript
-TERP.lin(.1, 400, 900); //returns 450
+/**
+ *  @param {number} input
+ *	@param {number} inputMin
+ *	@param {number} inputMax
+ *  @param {number} outputMin	
+ *	@param {number} outputMax
+ *  @param {number=} exponent (optinal exponent which will change the interpolation curve)
+ * 
+ *  @return {number} 
+ */
+```
 
-TERP.exp(20, 12, 300, 0, 1000) // returns 0.7716049382716049
-
-TERP.log(300, 1.1, 250.1, 0, 1000) // returns 1072.0150156728134
-TERP.log(300, 1.1, 250.1, 0, 1000, true) // returns 1000
+examples: 
+```javascript
+	TERP.scale(50, 0, 100, 100, 1000, 2); //returns 325
+	TERP.scale(-1, -2, 0, 0, 1000); //returns 500
 ```
