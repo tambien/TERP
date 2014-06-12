@@ -71,7 +71,7 @@ examples:
 
 There are array version of each of those functions. 
 
-```normalizeArray```, ```scaleArray```, and ```mapArray``` are the same as the above funcitons, but take an array as their first argument and return an array of the same length as the first argument with each of the values interpolated. 
+```normalizeArray```, ```scaleArray```, and ```mapArray``` are the same as the above functions, but take an array as their first argument and return an array of the same length as the first argument with each of the values interpolated. 
 
 ```normalizeArray``` can accept one argument, in which case it will set the inputMin and inputMax to the smallest and largest values in the array. 
 
